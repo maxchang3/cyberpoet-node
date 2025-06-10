@@ -10,11 +10,17 @@
 > [!NOTE]
 > 目前，本项目的大部分过程由 Github Copilot（Claude Sonnet 4）实现。主要为了探索一些可能性，因此可能一些实现或逻辑有所欠缺，欢迎 PR 改进。
 
-## 🚀 快速开始
+## 预览
+
+<p align="center" >
+  <img src="https://github.com/user-attachments/assets/a929612a-4e77-4e41-8916-b4741cadd124" width="50%"/>
+</p>
+
+## 快速开始
 
 ### 环境要求
 
-- Node.js >= 16
+- Node.js >= 23（仅在此版本下测试）
 - pnpm (推荐) 或 npm
 
 ### 安装
@@ -116,7 +122,7 @@ cyberpoet-node/
 
 <sup>* 来自 [wanghaoyucn/cyberpoet](https://github.com/wanghaoyucn/cyberpoet)</sup> 
 
-## 🔧 开发
+## 开发
 
 ### DBF 数据转换
 

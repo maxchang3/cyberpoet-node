@@ -2,11 +2,7 @@
   "private": true,
   "type": "module",
   "name": "cyberpoet-node",
-  "version": "1.0.0",
-  "description": "",
-  "keywords": [],
-  "license": "ISC",
-  "author": "",
+  "version": ".0.0",
   "scripts": {
     "start": "tsx src/index.ts",
     "test": "vitest run",

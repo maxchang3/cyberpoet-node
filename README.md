@@ -1,4 +1,4 @@
-# CyberPoet.js
+# CyberPoet-Node
 
 <pre align="center">
 　　听吧！

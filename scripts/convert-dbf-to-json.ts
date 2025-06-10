@@ -5,8 +5,8 @@ import { join } from 'node:path'
 import { DBFFile } from 'dbffile'
 
 /**
- * DBF文件转JSON的转换脚本
- * 将Visual FoxPro的数据库文件转换为JSON格式，便于Node.js项目使用
+ * DBF 文件转 JSON 的转换脚本
+ * 将 Visual FoxPro 的数据库文件转换为 JSON 格式，便于 Node.js 项目使用
  */
 
 interface PoetryConfig {

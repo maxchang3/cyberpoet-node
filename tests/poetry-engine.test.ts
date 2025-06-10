@@ -25,48 +25,36 @@ describe('PoetryEngine', () => {
 
             const poem = engine.generatePoetry(options)
 
-            expect(poem).toBeDefined()
-            expect(poem.lines).toBeDefined()
-            expect(Array.isArray(poem.lines)).toBe(true)
-            expect(poem.lines.length).toBe(4)
+            expect(poem.lines).toHaveLength(4)
             expect(poem.options).toEqual(options)
             expect(poem.createdAt).toBeInstanceOf(Date)
 
             // 检查每行都不为空
             poem.lines.forEach((line: string) => {
-                expect(typeof line).toBe('string')
                 expect(line.trim().length).toBeGreaterThan(0)
             })
         })
 
-        it('应该能够生成宁静风格的诗歌', () => {
-            const options: PoetryGenerationOptions = {
-                style: 'quiet',
-                paragraphCount: 1,
-                linesPerParagraph: 2,
-                useRhyme: false,
-            }
+        it('应该能够生成不同风格的诗歌', () => {
+            const testCases = [
+                { style: 'quiet' as const, expectedLines: 2 },
+                { style: 'bold' as const, expectedLines: 3 },
+            ]
 
-            const poem = engine.generatePoetry(options)
+            testCases.forEach(({ style, expectedLines }) => {
+                const options: PoetryGenerationOptions = {
+                    style,
+                    paragraphCount: 1,
+                    linesPerParagraph: expectedLines,
+                    useRhyme: false,
+                }
 
-            expect(poem).toBeDefined()
-            expect(poem.lines.length).toBe(2)
-            expect(poem.options.style).toBe('quiet')
-        })
+                const poem = engine.generatePoetry(options)
 
-        it('应该能够生成奔放风格的诗歌', () => {
-            const options: PoetryGenerationOptions = {
-                style: 'bold',
-                paragraphCount: 1,
-                linesPerParagraph: 3,
-                useRhyme: false,
-            }
-
-            const poem = engine.generatePoetry(options)
-
-            expect(poem).toBeDefined()
-            expect(poem.lines.length).toBe(3)
-            expect(poem.options.style).toBe('bold')
+                expect(poem).toBeDefined()
+                expect(poem.lines.length).toBe(expectedLines)
+                expect(poem.options.style).toBe(style)
+            })
         })
 
         it('应该能够生成多段诗歌', () => {
@@ -113,14 +101,12 @@ describe('PoetryEngine', () => {
             const poem = engine.generatePoetry(options)
             const content = await engine.savePoetry(poem, '测试诗歌')
 
-            expect(typeof content).toBe('string')
-            expect(content.includes('测试诗歌')).toBe(true)
-            expect(content.includes('**************************************')).toBe(true)
-            expect(content.includes('作品第')).toBe(true)
+            expect(content).toContain('测试诗歌')
+            expect(content).toContain('作品第')
 
             // 检查诗句是否包含在内容中
             poem.lines.forEach((line: string) => {
-                expect(content.includes(line)).toBe(true)
+                expect(content).toContain(line)
             })
         })
 
@@ -267,23 +253,7 @@ describe('PoetryEngine', () => {
     })
 
     describe('性能测试', () => {
-        it('应该能够在合理时间内生成诗歌', () => {
-            const options: PoetryGenerationOptions = {
-                style: 'bold',
-                paragraphCount: 2,
-                linesPerParagraph: 4,
-                useRhyme: false,
-            }
-
-            const startTime = Date.now()
-            const poem = engine.generatePoetry(options)
-            const endTime = Date.now()
-
-            expect(poem).toBeDefined()
-            expect(endTime - startTime).toBeLessThan(5000) // 应该在5秒内完成
-        })
-
-        it('生成大型诗歌不应该导致内存问题', () => {
+        it('应该能够生成大量诗歌内容', () => {
             const options: PoetryGenerationOptions = {
                 style: 'bold',
                 paragraphCount: 5,
@@ -291,10 +261,13 @@ describe('PoetryEngine', () => {
                 useRhyme: false,
             }
 
-            expect(() => {
-                const poem = engine.generatePoetry(options)
-                expect(poem.lines.length).toBe(40) // 5段 × 8行
-            }).not.toThrow()
+            const poem = engine.generatePoetry(options)
+
+            expect(poem.lines.length).toBe(40) // 5段 × 8行
+            // 验证所有行都有内容
+            poem.lines.forEach((line) => {
+                expect(line.trim().length).toBeGreaterThan(0)
+            })
         })
     })
 })

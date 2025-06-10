@@ -1,0 +1,7 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`PoetryEngine > 版本信息功能 > 应该能够正确计算诗人的天数（不足一个月时） 1`] = `"16天大的计算机诗人火鸟将为您歌唱！"`;
+
+exports[`PoetryEngine > 版本信息功能 > 应该能够正确计算诗人的月龄（不足一岁时） 1`] = `"4个月大的计算机诗人火鸟将为您歌唱！"`;
+
+exports[`PoetryEngine > 版本信息功能 > 应该能够获取诗人年龄信息 1`] = `"23岁的计算机诗人火鸟将为您歌唱！"`;

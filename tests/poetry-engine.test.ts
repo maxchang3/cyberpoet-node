@@ -1,12 +1,17 @@
 import { PoetryEngine } from '@/services/poetry-engine'
 import type { PoetryGenerationOptions } from '@/types'
-import { beforeEach, describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 describe('PoetryEngine', () => {
     let engine: PoetryEngine
 
     beforeEach(() => {
+        vi.useFakeTimers()
         engine = new PoetryEngine()
+    })
+
+    afterEach(() => {
+        vi.useRealTimers()
     })
 
     describe('诗歌生成功能', () => {
@@ -153,14 +158,41 @@ describe('PoetryEngine', () => {
         })
 
         it('应该能够获取诗人年龄信息', () => {
+            // Mock 一个固定的时间点进行测试
+            const mockDate = new Date('2025-06-10T12:00:00.000Z')
+            vi.setSystemTime(mockDate)
+
             const ageInfo = engine.getPoetAge()
 
             expect(typeof ageInfo).toBe('string')
             expect(ageInfo.includes('计算机诗人火鸟将为您歌唱')).toBe(true)
 
-            // 应该包含年龄相关的词汇
-            const containsAge = ageInfo.includes('岁') || ageInfo.includes('个月') || ageInfo.includes('天')
-            expect(containsAge).toBe(true)
+            // 使用快照测试确保输出一致性
+            expect(ageInfo).toMatchSnapshot()
+        })
+
+        it('应该能够正确计算诗人的月龄（不足一岁时）', () => {
+            // Mock 到诗人出生后几个月
+            const mockDate = new Date('2002-08-15T12:00:00.000Z')
+            vi.setSystemTime(mockDate)
+
+            const ageInfo = engine.getPoetAge()
+
+            expect(typeof ageInfo).toBe('string')
+            expect(ageInfo.includes('个月大的计算机诗人火鸟将为您歌唱')).toBe(true)
+            expect(ageInfo).toMatchSnapshot()
+        })
+
+        it('应该能够正确计算诗人的天数（不足一个月时）', () => {
+            // Mock 到诗人出生后几天
+            const mockDate = new Date('2002-04-20T12:00:00.000Z')
+            vi.setSystemTime(mockDate)
+
+            const ageInfo = engine.getPoetAge()
+
+            expect(typeof ageInfo).toBe('string')
+            expect(ageInfo.includes('天大的计算机诗人火鸟将为您歌唱')).toBe(true)
+            expect(ageInfo).toMatchSnapshot()
         })
     })
 
